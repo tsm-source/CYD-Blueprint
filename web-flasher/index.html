@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="CYD Blueprint direkt im Browser auf ein CYD oder Freenove FNK0114L installieren.">
+    <title>CYD Blueprint installieren</title>
+    <script
+      type="module"
+      src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+    ></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        background: #111827;
+        color: #f9fafb;
+      }
+      body {
+        box-sizing: border-box;
+        display: grid;
+        min-height: 100vh;
+        margin: 0;
+        padding: 2rem;
+        place-items: center;
+      }
+      main {
+        width: min(100%, 38rem);
+        padding: 2rem;
+        border: 1px solid #4b5563;
+        border-radius: 1rem;
+        background: #1f2937;
+        box-shadow: 0 1rem 3rem #0006;
+      }
+      h1, .board-tile h3 { color: #67e8f9; }
+      h1 { margin-top: 0; }
+      p, li { line-height: 1.6; }
+      .install { margin: 1.5rem 0; text-align: center; }
+      .board-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .board-tile {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        padding: 1rem;
+        border: 1px solid #4b5563;
+        border-radius: 0.75rem;
+        background: #111827;
+      }
+      .board-tile h3 { margin: 0; font-size: 1.1rem; }
+      .board-tile p { flex-grow: 1; }
+      .board-tile .install { margin: 1rem 0 0; }
+      @media (max-width: 36rem) {
+        .board-options { grid-template-columns: 1fr; }
+      }
+      a { color: #7dd3fc; }
+      .warning {
+        padding: 1rem;
+        border-left: 4px solid #fbbf24;
+        background: #111827;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>CYD Blueprint</h1>
+      <p>Startprojekt f&uuml;r das CYD mit Touch, WLAN, Ton und Animationen. Die Firmware zeigt einen leeren Startscreen mit dem Button &bdquo;OPTIONS&ldquo;.</p>
+      <ol>
+        <li>Chrome, Edge oder einen anderen Desktop-Browser mit Web-Serial-Unterst&uuml;tzung verwenden.</li>
+        <li>Das Board mit einem USB-Datenkabel verbinden.</li>
+        <li>Unten das passende Board w&auml;hlen, den seriellen Port ausw&auml;hlen und best&auml;tigen.</li>
+      </ol>
+      <p class="warning">
+        Die Firmware muss zu Board und Displaycontroller passen. Die Images
+        sind nicht austauschbar.
+      </p>
+      <h2>Unterst&uuml;tzte Boards</h2>
+      <section class="board-options" aria-label="Board w&auml;hlen">
+        <article class="board-tile">
+          <h3>CYD 2.8&Prime; ST7789</h3>
+          <p>2,8 Zoll, 240 &times; 320, ST7789 mit resistivem XPT2046-Touch.</p>
+          <p class="install">
+            <esp-web-install-button manifest="./manifest.json"></esp-web-install-button>
+          </p>
+        </article>
+        <article class="board-tile">
+          <h3>CYD 2.8&Prime; ILI9341 (ESP32-2432S028R)</h3>
+          <p>2,8 Zoll, 240 &times; 320, ILI9341 mit resistivem XPT2046-Touch.</p>
+          <p class="install">
+            <esp-web-install-button manifest="./manifest-cyd-ili9341.json"></esp-web-install-button>
+          </p>
+        </article>
+        <article class="board-tile">
+          <h3>Freenove FNK0114L 3.2&Prime;</h3>
+          <p>3,2 Zoll, 240 &times; 320, ST7789 IPS mit resistivem Touch und RGB-LED.</p>
+          <p class="install">
+            <esp-web-install-button manifest="./manifest-freenove.json"></esp-web-install-button>
+          </p>
+        </article>
+      </section>
+      <p class="warning">
+        Bei einer Neuinstallation bietet der Flasher an, das Ger&auml;t zu l&ouml;schen.
+        Dabei gehen WLAN-Zugangsdaten, Lautst&auml;rke, Farben und die
+        Touch-Kalibrierung verloren.
+      </p>
+      <p>
+        Nach der Installation WLAN und Optionen direkt am Ger&auml;t einstellen.
+        Hinweise und Quellcode:
+        <a href="https://github.com/tsm-source/CYD-Blueprint">Projekt-Repository</a>.
+      </p>
+    </main>
+  </body>
+</html>

@@ -57,6 +57,14 @@ Töne: `audioPlayUrl()` / `audioStop()` / `audioSetVolume()` (`audio_player.h`).
 Framework schiebt es flackerfrei auf das Display. Ohne Aufruf wird kein Speicher
 belegt.
 
+## Web-Flasher
+
+Die Firmware lässt sich direkt im Browser installieren:
+<https://tsm-source.github.io/CYD-Blueprint/>. Jeder Push auf `main` baut die drei
+`*-low-memory`-Varianten und veröffentlicht den Flasher über GitHub Pages
+(einmalig unter *Settings → Pages → Source: GitHub Actions* aktivieren).
+Die Seite liegt in `web-flasher/`, der Ablauf in `.github/workflows/web-flasher.yml`.
+
 ## Speichertricks (aus dem PET-Radio)
 
 - **8-Bit-Sprites** statt RGB565 (Framebuffer 320×240 = 75 KB).
