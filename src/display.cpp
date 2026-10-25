@@ -1,5 +1,7 @@
 #include "display.h"
 
+#include <esp_heap_caps.h>
+
 #include "config.h"
 #include "settings.h"
 #include "ui.h"
@@ -168,9 +170,22 @@ bool animationCanvasCreate(int16_t x, int16_t y, int16_t width, int16_t height,
   animationCanvasDestroy();
   animationSprite.setColorDepth(colorDepth);
   animationReady = animationSprite.createSprite(width, height);
+  if (!animationReady && colorDepth > 8) {
+    Serial.printf("WARNING: %u-bit animation canvas failed (largest free "
+                  "block %u bytes); retrying with 8 bit.\n",
+                  static_cast<unsigned>(colorDepth),
+                  static_cast<unsigned>(
+                      heap_caps_get_largest_free_block(MALLOC_CAP_8BIT)));
+    colorDepth = 8;
+    animationSprite.setColorDepth(colorDepth);
+    animationReady = animationSprite.createSprite(width, height);
+  }
   if (!animationReady) {
-    Serial.printf("WARNING: could not allocate %u-byte animation canvas.\n",
-                  static_cast<unsigned>(width * height * colorDepth / 8));
+    Serial.printf("WARNING: could not allocate %u-byte animation canvas "
+                  "(largest free block %u bytes).\n",
+                  static_cast<unsigned>(width * height * colorDepth / 8),
+                  static_cast<unsigned>(
+                      heap_caps_get_largest_free_block(MALLOC_CAP_8BIT)));
     return false;
   }
   animationX = x;

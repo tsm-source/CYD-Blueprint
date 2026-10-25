@@ -53,6 +53,7 @@ namespace {
 constexpr int16_t CLOCK_X = 20, CLOCK_Y = 70;
 constexpr int16_t CLOCK_WIDTH = 280, CLOCK_HEIGHT = 80;
 constexpr uint16_t CLOCK_INTERVAL_MS = 1000;
+constexpr uint8_t CLOCK_COLOR_DEPTH = 8;
 constexpr time_t MIN_VALID_TIME = 1609459200;  // 1.1.2021
 const char *const WEEKDAYS[] = {"Sonntag", "Montag", "Dienstag", "Mittwoch",
                                 "Donnerstag", "Freitag", "Samstag"};
@@ -66,11 +67,13 @@ const char *const WEEKDAYS[] = {"Sonntag", "Montag", "Dienstag", "Mittwoch",
 ```cpp
 void appSetup() {
   animationCanvasCreate(CLOCK_X, CLOCK_Y, CLOCK_WIDTH, CLOCK_HEIGHT,
-                        CLOCK_INTERVAL_MS);
+                        CLOCK_INTERVAL_MS, CLOCK_COLOR_DEPTH);
 }
 ```
 
-**Warum hier?** `appSetup` läuft einmal beim Start, nachdem Display, WLAN und Einstellungen bereit sind. Standard ist 16 Bit Farbtiefe (280×80 = ca. 45 KB), damit der dunkle Hintergrund richtig dargestellt wird.
+**Warum hier?** `appSetup` läuft einmal beim Start, nachdem Display, WLAN und Einstellungen bereit sind.
+
+**Warum 8 Bit?** Das Display-Bild (Framebuffer) belegt schon 75 KB, WLAN braucht auch Speicher. Ein 16-Bit-Canvas (45 KB am Stück) passte auf dem Test-CYD nicht mehr hinein: Es gab keine Uhr und im Serial-Log stand `could not allocate 44800-byte animation canvas`. Mit 8 Bit sind es nur 22 KB. Dafür wird der Canvas ein schwarzer Kasten (sehr dunkle Farben gehen bei 8 Bit verloren).
 
 ## 4. Statischen Teil zeichnen in `appDrawHome()` (5 min)
 
@@ -92,12 +95,13 @@ void appDrawHome(TFT_eSPI &gfx) {
 ```cpp
 void appDrawAnimation(TFT_eSprite &canvas, uint32_t now) {
   (void)now;
-  canvas.fillSprite(backgroundColor);          // 1. Alles löschen
+  canvas.fillSprite(TFT_BLACK);                // 1. Alles löschen
+  canvas.drawRect(0, 0, CLOCK_WIDTH, CLOCK_HEIGHT, 0x4208);  // Rahmen
   canvas.setTextDatum(MC_DATUM);               // Text mittig ausrichten
 
   const time_t raw = time(nullptr);
   if (raw < MIN_VALID_TIME) {                  // 2. Noch keine Zeit?
-    canvas.setTextColor(TEXT_MUTED, backgroundColor);
+    canvas.setTextColor(TEXT_MUTED, TFT_BLACK);
     canvas.drawString("Warte auf WLAN...", CLOCK_WIDTH / 2, CLOCK_HEIGHT / 2, 2);
     return;
   }
@@ -107,13 +111,13 @@ void appDrawAnimation(TFT_eSprite &canvas, uint32_t now) {
   char text[16];
 
   strftime(text, sizeof(text), "%H:%M:%S", &t);
-  canvas.setTextColor(TFT_WHITE, backgroundColor);
+  canvas.setTextColor(TFT_WHITE, TFT_BLACK);
   canvas.setTextSize(3);                       // 4. Große Schrift
   canvas.drawString(text, CLOCK_WIDTH / 2, 28, 2);
   canvas.setTextSize(1);                       //    unbedingt zurücksetzen!
 
   strftime(text, sizeof(text), "%d.%m.%Y", &t);
-  canvas.setTextColor(TFT_CYAN, backgroundColor);
+  canvas.setTextColor(TFT_CYAN, TFT_BLACK);
   canvas.drawString(String(WEEKDAYS[t.tm_wday]) + ", " + text,
                     CLOCK_WIDTH / 2, 66, 2);
 }
@@ -149,4 +153,4 @@ Bau und Upload, WLAN verbinden, Uhr läuft. Die Lösung wurde für `esp32dev-fas
 | „Warte auf WLAN..." bleibt | WLAN nicht eingerichtet, kein Internet |
 | Uhr zeigt falsche Stunde | `TIMEZONE` in `config.h` prüfen |
 | Alles Folgende zu groß | `setTextSize(1)` vergessen |
-| Nichts sichtbar | `animationCanvasCreate` nicht in `appSetup` oder zu wenig Speicher (Serial-Log prüfen) |
+| Nichts sichtbar | `animationCanvasCreate` nicht in `appSetup` oder zu wenig Speicher: im Serial-Log nach `could not allocate` suchen, dann Farbtiefe 8 verwenden |
