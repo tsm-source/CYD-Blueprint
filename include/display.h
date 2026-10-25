@@ -44,8 +44,11 @@ bool pointOnMenuBackButton(int16_t x, int16_t y);
 // Optional animation region. It is a small 8-bit sprite that is composed off
 // screen and pushed in one piece, so animations do not flicker even in the
 // low-memory profile. Nothing is allocated until an app asks for it.
+// colorDepth 16 reproduces every color exactly (use it when the canvas shares
+// the themed background); 8 halves the memory but turns dark colors into
+// black, so only use it with bright colors on a black background.
 bool animationCanvasCreate(int16_t x, int16_t y, int16_t width, int16_t height,
-                           uint16_t frameIntervalMs);
+                           uint16_t frameIntervalMs, uint8_t colorDepth = 16);
 void animationCanvasDestroy();
 bool animationCanvasReady();
 bool animationCanvasDue(uint32_t now);

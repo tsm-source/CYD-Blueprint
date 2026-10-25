@@ -52,10 +52,23 @@ Töne: `audioPlayUrl()` / `audioStop()` / `audioSetVolume()` (`audio_player.h`).
 
 ## Animationen
 
-`animationCanvasCreate(x, y, w, h, intervallMs)` legt einen kleinen 8-Bit-Sprite an
-(z. B. in `appSetup()`). `appDrawAnimation()` zeichnet jedes Bild dort hinein, das
-Framework schiebt es flackerfrei auf das Display. Ohne Aufruf wird kein Speicher
-belegt.
+`animationCanvasCreate(x, y, w, h, intervallMs, colorDepth = 16)` legt einen kleinen
+Sprite an (z. B. in `appSetup()`). `appDrawAnimation()` zeichnet jedes Bild dort
+hinein, das Framework schiebt es flackerfrei auf das Display. Ohne Aufruf wird kein
+Speicher belegt.
+
+Mit `colorDepth = 8` braucht der Canvas nur die Hälfte des Speichers, aber sehr
+dunkle Farben werden schwarz (RGB332). Das passt bei schwarzem Hintergrund mit
+hellen Farben; sonst die 16 Bit belassen.
+
+## Tutorials
+
+Mit Lösungen in `tutorial/` (`src/app.cpp` bleibt leer):
+
+- [WLAN-Uhr](docs/tutorial-uhr.md)
+- [Fang den Punkt (Touch-Spiel)](docs/tutorial-spiel.md)
+
+Die Bilder darin sind simulierte Nachzeichnungen (`scripts/make_tutorial_images.py`).
 
 ## Web-Flasher
 

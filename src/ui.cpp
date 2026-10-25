@@ -521,7 +521,9 @@ void handleTouch(int16_t x, int16_t y) {
       if (pointInRect(x, y, OPTIONS_BUTTON_X, OPTIONS_BUTTON_Y,
                       OPTIONS_BUTTON_WIDTH, OPTIONS_BUTTON_HEIGHT)) {
         screen = Screen::Settings;
-      } else if (appHandleTouch(x, y)) {
+      } else {
+        // App touches must not repaint the whole screen (flicker).
+        appHandleTouch(x, y);
         return;
       }
       break;

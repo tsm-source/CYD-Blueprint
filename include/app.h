@@ -20,5 +20,7 @@ void appDrawHome(TFT_eSPI &gfx);
 // while the home screen is visible.
 void appDrawAnimation(TFT_eSprite &canvas, uint32_t now);
 
-// Home screen touch (outside the OPTIONS button). Return true if handled.
+// Home screen touch (outside the OPTIONS button). The screen is not repainted
+// automatically; call markUiDirty() if appDrawHome() content changed.
+// Return true if the touch was used.
 bool appHandleTouch(int16_t x, int16_t y);

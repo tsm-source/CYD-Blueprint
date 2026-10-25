@@ -164,22 +164,23 @@ void drawMenuBackButton() {
 }
 
 bool animationCanvasCreate(int16_t x, int16_t y, int16_t width, int16_t height,
-                           uint16_t frameIntervalMs) {
+                           uint16_t frameIntervalMs, uint8_t colorDepth) {
   animationCanvasDestroy();
-  animationSprite.setColorDepth(8);
+  animationSprite.setColorDepth(colorDepth);
   animationReady = animationSprite.createSprite(width, height);
   if (!animationReady) {
     Serial.printf("WARNING: could not allocate %u-byte animation canvas.\n",
-                  static_cast<unsigned>(width * height));
+                  static_cast<unsigned>(width * height * colorDepth / 8));
     return false;
   }
   animationX = x;
   animationY = y;
   animationIntervalMs = frameIntervalMs;
   lastAnimationAt = 0;
-  Serial.printf("Animation canvas: %ux%u (%u bytes).\n",
+  Serial.printf("Animation canvas: %ux%u, %u-bit (%u bytes).\n",
                 static_cast<unsigned>(width), static_cast<unsigned>(height),
-                static_cast<unsigned>(width * height));
+                static_cast<unsigned>(colorDepth),
+                static_cast<unsigned>(width * height * colorDepth / 8));
   return true;
 }
 
