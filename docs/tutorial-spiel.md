@@ -7,7 +7,16 @@ Ziel: Ein Punkt springt auf dem Display umher. Wer ihn antippt, bekommt einen Pu
 
 ## 0. Vorbereitung (3 min)
 
-Projekt öffnen, Environment wählen, flashen. Der Startscreen ist leer:
+Projekt von GitHub holen (einmalig; [Git](https://git-scm.com/downloads) muss installiert sein):
+
+```powershell
+git clone https://github.com/tsm-source/CYD-Blueprint.git
+cd CYD-Blueprint
+code .
+```
+
+Später den neuesten Stand holen: `git pull`. Ohne Git: auf GitHub *Code → Download ZIP* und entpacken.
+Dann in VS Code mit PlatformIO das Environment wählen und flashen. Der Startscreen ist leer:
 
 ![Leerer Startscreen](img/start-leer.png)
 

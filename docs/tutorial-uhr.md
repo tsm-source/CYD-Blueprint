@@ -7,7 +7,16 @@ Ziel: Der Startscreen zeigt Uhrzeit und Datum. Die Zeit holt sich das CYD per WL
 
 ## 0. Vorbereitung (5 min)
 
-1. Projekt in VS Code mit PlatformIO öffnen, passendes Environment wählen (z. B. `esp32dev-fast`).
+1. Projekt von GitHub holen (einmalig; [Git](https://git-scm.com/downloads) muss installiert sein):
+
+   ```powershell
+   git clone https://github.com/tsm-source/CYD-Blueprint.git
+   cd CYD-Blueprint
+   code .
+   ```
+
+   Später den neuesten Stand holen: `git pull`. Ohne Git: auf GitHub *Code → Download ZIP* und entpacken.
+   Dann in VS Code mit PlatformIO das passende Environment wählen (z. B. `esp32dev-fast`).
 2. Flashen. Der Startscreen ist leer und zeigt nur OPTIONS:
 
    ![Leerer Startscreen](img/start-leer.png)
