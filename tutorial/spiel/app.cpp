@@ -11,10 +11,12 @@
 
 namespace {
 
-constexpr int16_t FIELD_X = 20;
-constexpr int16_t FIELD_Y = 34;
-constexpr int16_t FIELD_WIDTH = 280;
-constexpr int16_t FIELD_HEIGHT = 150;
+// 240x120 = 28 KB: groesser findet im Profil mit Framebuffer (esp32dev-fast)
+// keinen zusammenhaengenden Speicher mehr.
+constexpr int16_t FIELD_X = 40;
+constexpr int16_t FIELD_Y = 44;
+constexpr int16_t FIELD_WIDTH = 240;
+constexpr int16_t FIELD_HEIGHT = 120;
 constexpr int16_t TARGET_RADIUS = 20;
 // Etwas grosszuegiger als der sichtbare Kreis: Finger sind dicker als Pixel.
 constexpr int16_t TOUCH_TOLERANCE = 8;

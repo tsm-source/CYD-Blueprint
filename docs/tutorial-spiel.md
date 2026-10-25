@@ -46,8 +46,8 @@ Alles Eigene kommt in [`src/app.cpp`](../src/app.cpp). Touch, Display und Speich
 #include "ui.h"         // currentScreen()
 
 namespace {
-constexpr int16_t FIELD_X = 20, FIELD_Y = 34;
-constexpr int16_t FIELD_WIDTH = 280, FIELD_HEIGHT = 150;
+constexpr int16_t FIELD_X = 40, FIELD_Y = 44;
+constexpr int16_t FIELD_WIDTH = 240, FIELD_HEIGHT = 120;
 constexpr int16_t TARGET_RADIUS = 20;
 constexpr int16_t TOUCH_TOLERANCE = 8;
 constexpr uint16_t FRAME_INTERVAL_MS = 33;       // ca. 30 Bilder/s
@@ -74,7 +74,7 @@ void appSetup() {
 }
 ```
 
-**Warum die `8`?** Die letzte Zahl ist die Farbtiefe. 8 Bit halbiert den Speicher (42 KB statt 84 KB). Der Preis: sehr dunkle Farben werden schwarz. Das Spielfeld ist schwarz mit hellen Farben, also passt das. (Eine Uhr mit dunkelgrauem Hintergrund bräuchte 16 Bit.)
+**Warum die `8`?** Die letzte Zahl ist die Farbtiefe. 8 Bit halbiert den Speicher (hier 28 KB statt 57 KB). Der Preis: sehr dunkle Farben werden schwarz. Das Spielfeld ist schwarz mit hellen Farben, also passt das. Die Feldgröße ist begrenzt: Ein 280×150-Feld (42 KB am Stück) fand auf dem Test-CYD keinen Speicher (Log: `could not allocate`, größter freier Block ca. 34 KB). Deshalb 240×120.
 
 ## 4. Punkt bewegen und Runde beenden (5 min)
 
